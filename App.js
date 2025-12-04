@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import Button from './src/components/Button'
+import Displey from './src/components/Displey';
 
 export default class App extends Component {
+
+  state = {
+    displayValue: '0'
+  }
+
   render() {
     return (
       <View style={styles.container}>
-
+        <Displey value={this.state.displayValue} />
         <View style={styles.buttons}>
           <Button label="AC" />
           <Button label="/" />
@@ -31,12 +37,12 @@ export default class App extends Component {
   }
 }
 const styles = StyleSheet.create({
-   container: {
+  container: {
     flex: 1,
-   },
-   buttons: {
+  },
+  buttons: {
     flexDirection: 'row',
     flexWrap: 'wrap'
-   }
+  }
 });
 
