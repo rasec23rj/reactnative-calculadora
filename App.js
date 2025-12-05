@@ -1,18 +1,41 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import Button from './src/components/Button'
 import Displey from './src/components/Displey';
 
+
+const initialState = {
+  displayValue: '0',
+  clearDisplay: false,
+  operation: null,
+  value: [0,0],
+  current: 0,
+}
+
+
 export default class App extends Component {
 
-  state = {
-    displayValue: '0'
+  state = {...initialState  }
+
+  addDigit = n => {
+    if (n == '.' && this.state.displayValue.includes('.')) {
+      return
+    }
+    const clearDisplay = this.state.displayValue === '0' || this.state.clearDisplay
+    const currentValue = clearDisplay ? '' : this.state.displayValue
+    const displayValue = currentValue + n
+    this.setState({displayValue, clearDisplay: false})
+    if (n !== '.') {
+      const newValue = parseFloat(displayValue)
+      const values = [...this.state.value]
+      values[this.state.current] = newValue
+      this.setState({values})
+    }
   }
-  addDigit = n =>
-    this.setState({ displayValue: n })
+   
 
   clearMamory = () =>
-    this.setState({ displayValue: '0' })
+    this.setState({ ...initialState })
 
 
   setOperation = operation => {
@@ -24,7 +47,7 @@ export default class App extends Component {
         <Displey value={this.state.displayValue} />
         <View style={styles.buttons}>
           <Button label="AC" triple onClick={this.clearMamory} />
-          <Button label="/" operation onClick={() => this.setOperation('/')} />
+          <Button label="/" operation onClick={this.setOperation} />
           <Button label="7" onClick={this.addDigit} />
           <Button label="8" onClick={this.addDigit} />
           <Button label="9" onClick={this.addDigit} />
